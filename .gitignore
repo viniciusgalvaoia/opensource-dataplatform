@@ -162,3 +162,4 @@ cython_debug/
 
 *.terraform/
 infra/terraform/kubernetes/aks/dev/terraform.tfstate
+infra/terraform/kubernetes/aks/dev/terraform.*
