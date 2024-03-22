@@ -1,18 +1,19 @@
 {{ config(
     materialized = 'table',
-    database = 'iceberg'
+    database = 'iceberg',
+	schema='trusted'
 ) }}
 
 WITH movies_based_on_books AS (
 	SELECT DISTINCT
-		movie_title,
-        book_title
+		LOWER(movie_title) as movie_title,
+        LOWER(book_title) as book_title
     FROM
 		{{ ref('vendor_reviews') }}
 ),
 streamed_movies AS (
 	SELECT DISTINCT
-		movie_title
+		LOWER(movie_title) as movie_title
     FROM
 		{{ ref('internal_streams') }}
 )
@@ -25,8 +26,8 @@ INNER JOIN
 		ON streamed_movies.movie_title = movies_based_on_books.movie_title
 INNER JOIN
 	{{ ref('vendor_books') }}
-		ON movies_based_on_books.book_title = vendor_books.name
+		ON movies_based_on_books.book_title = LOWER(vendor_books.name)
 INNER JOIN
 	{{ ref('vendor_authors') }}
-		ON vendor_books.author = vendor_authors.name
-        AND authors.nationality = 'nationalitiy_slug'
+		ON LOWER(vendor_books.author) = LOWER(vendor_authors.name)
+        AND vendor_authors.nationalitiy_slug = 'singaporeans'

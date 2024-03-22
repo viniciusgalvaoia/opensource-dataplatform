@@ -21,3 +21,15 @@ iceberg:
       host: 4.153.113.220
       port: 8080
       user: trino
+
+metrics:
+  target: dev
+  outputs:
+    dev:
+      type: trino
+      threads: 1
+      catalog: iceberg
+      schema: trusted
+      host: 4.153.113.220
+      port: 8080
+      user: trino
