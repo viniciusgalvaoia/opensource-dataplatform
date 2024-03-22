@@ -7,5 +7,5 @@ metadata:
     argocd.argoproj.io/secret-type: repository
 stringData:
   url: https://github.com/viniciusgalvaoia/strider-data-platform.git
-  password: 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
+  password: 
   username: not-used
