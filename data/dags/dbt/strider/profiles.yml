@@ -1,0 +1,23 @@
+minio:
+  target: dev
+  outputs:
+    dev:
+      type: trino
+      threads: 1
+      catalog: minio
+      schema: landing
+      host: localhost
+      port: 59995
+      user: trino
+
+iceberg:
+  target: dev
+  outputs:
+    dev:
+      type: trino
+      threads: 1
+      catalog: iceberg
+      schema: stage
+      host: localhost
+      port: 59995
+      user: trino

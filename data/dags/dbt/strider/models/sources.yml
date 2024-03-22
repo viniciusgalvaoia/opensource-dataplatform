@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: minio
+    database: minio
+    schema: landing
+    tables:
+      - name: internal_movies_parquet
+      - name: internal_streams_parquet
+      - name: internal_users_parquet
+      - name: vendor_authors_parquet
+      - name: vendor_books_parquet
+      - name: vendor_reviews_parquet
