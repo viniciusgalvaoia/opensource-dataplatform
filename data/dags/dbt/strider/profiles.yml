@@ -6,8 +6,8 @@ minio:
       threads: 1
       catalog: minio
       schema: landing
-      host: localhost
-      port: 59000
+      host: 4.153.113.220
+      port: 8080
       user: trino
 
 iceberg:
@@ -18,6 +18,6 @@ iceberg:
       threads: 1
       catalog: iceberg
       schema: stage
-      host: localhost
-      port: 59000
+      host: 4.153.113.220
+      port: 8080
       user: trino
