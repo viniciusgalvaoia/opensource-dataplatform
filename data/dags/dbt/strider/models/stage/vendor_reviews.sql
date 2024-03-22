@@ -1,6 +1,7 @@
 {{ config(
-    materialized = 'table',
-    database = 'iceberg',
+    materialized = 'incremental',
+    incremental_strategy = 'merge',
+    unique_key='review_id',
     tags = ["vendor"]
 ) }}
 
@@ -19,6 +20,11 @@ from
 )
 
 select 
+    {{ dbt_utils.generate_surrogate_key([
+        "books.metadata.title",
+        "movies.title",
+        "text"
+    ]) }} AS review_id,
     text,
     rate,
     label,
@@ -26,6 +32,10 @@ select
     books.metadata.title as book_title,
     books.metadata.pages as book_pages,
     movies.id as movie_id,
-    movies.title as movie_title
+    movies.title as movie_title,
+    current_timestamp as reference_date 
 from reviews_normalized
+{% if is_incremental()%}
+    WHERE current_timestamp > (SELECT MAX(reference_date) FROM {{ this }})
+{% endif %}
     
