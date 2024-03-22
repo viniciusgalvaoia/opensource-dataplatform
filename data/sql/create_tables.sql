@@ -43,11 +43,11 @@ CREATE TABLE minio.landing.vendor_authors_parquet (
         birth_date VARCHAR,
         died_at VARCHAR
     ),
-    nationalities ARRAY[ROW(
+    nationalities array(ROW(
         id INTEGER, 
         label VARCHAR, 
         slug VARCHAR
-    )]
+    ))
 ) WITH (
     external_location = 's3a://landing/strider/vendor/authors/parquet',
     format = 'PARQUET'

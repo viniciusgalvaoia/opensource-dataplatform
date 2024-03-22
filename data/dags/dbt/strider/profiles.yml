@@ -7,7 +7,7 @@ minio:
       catalog: minio
       schema: landing
       host: localhost
-      port: 59995
+      port: 59000
       user: trino
 
 iceberg:
@@ -19,5 +19,5 @@ iceberg:
       catalog: iceberg
       schema: stage
       host: localhost
-      port: 59995
+      port: 59000
       user: trino
