@@ -20,16 +20,18 @@ load_dotenv()
 
 
 def main(dstype: str, format_type: str):
-    """
-    :param dstype: The type of data storage to write the file to. It can be one of the following options: "mssql", "postgres", "mongodb", "redis", or "all".
-    :param format_type: The format of the file to be written.
-    :return: None
+    """Write a file to the specified data storage.
 
-    This method writes a file to the specified data storage type based on the provided parameters. It uses the `MinioStorage` class to perform the file write operation.
+    Args:
+        dstype (str): The type of data storage to write the file to. It can be one of the following options: "internal",
+                      "vendor", "all".
+        format_type (str): The format of the file to be written.
 
-    If `dstype` is "mssql", the file will be written to a Microsoft SQL Server data storage. If `dstype` is "postgres", the file will be written to a PostgreSQL data storage. If `dstype
-    *` is "mongodb", the file will be written to a MongoDB data storage. If `dstype` is "redis", the file will be written to a Redis data storage. If `dstype` is "all", the file will be
-    * written to all available data storages.
+    Returns:
+        None
+
+    This method writes a file to the specified data storage type based on the provided parameters. It uses the `MinioStorage`
+    class to perform the file write operation.
     """
 
     if dstype == "internal":

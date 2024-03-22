@@ -34,20 +34,12 @@ class MinioStorage(object):
         """
         Initialize the class with the provided parameters.
 
-        :param endpoint: The endpoint URL for connecting to the storage service. Defaults to None.
-        :type endpoint: str or None
-
-        :param access_key: The access key for authentication. Defaults to None.
-        :type access_key: str or None
-
-        :param secret_key: The secret key for authentication. Defaults to None.
-        :type secret_key: str or None
-
-        :param bucket_name: The name of the bucket to be used for the storage service. Defaults to None.
-        :type bucket_name: str or None
-
-        """
-
+        Args:
+            endpoint (str or None, optional): The endpoint URL for connecting to the storage service. Defaults to None.
+            access_key (str or None, optional): The access key for authentication. Defaults to None.
+            secret_key (str or None, optional): The secret key for authentication. Defaults to None.
+            bucket_name (str or None, optional): The name of the bucket to be used for the storage service. Defaults to None.
+        """ 
         self.bucket_name = None
         self.client = None
         self.get_config_storage(endpoint, access_key, secret_key, bucket_name)
@@ -56,14 +48,15 @@ class MinioStorage(object):
         """
         Get the configuration storage for the given endpoint, access key, secret key, and bucket name.
 
-        :param endpoint: The endpoint URL for the Minio server. If not provided, it will be fetched from the environment variable "ENDPOINT".
-        :param access_key: The access key for the Minio server. If not provided, it will be fetched from the environment variable "ACCESS_KEY".
-        :param secret_key: The secret key for the Minio server. If not provided, it will be fetched from the environment variable "SECRET_KEY".
-        :param bucket_name: The name of the bucket to be used for storing the configuration. If not provided, it will be fetched from the environment variable "LANDING_BUCKET".
+        Args:
+            endpoint (str, optional): The endpoint URL for the Minio server. If not provided, it will be fetched from the environment variable "ENDPOINT".
+            access_key (str, optional): The access key for the Minio server. If not provided, it will be fetched from the environment variable "ACCESS_KEY".
+            secret_key (str, optional): The secret key for the Minio server. If not provided, it will be fetched from the environment variable "SECRET_KEY".
+            bucket_name (str, optional): The name of the bucket to be used for storing the configuration. If not provided, it will be fetched from the environment variable "LANDING_BUCKET".
 
-        :return: None
+        Returns:
+            None
         """
-
         endpoint = endpoint or os.getenv("ENDPOINT")
         access_key = access_key or os.getenv("ACCESS_KEY")
         secret_key = secret_key or os.getenv("SECRET_KEY")
@@ -74,25 +67,17 @@ class MinioStorage(object):
     @staticmethod
     def create_dataframe(df, ds_type, format_type):
         """
-        :param dt: a list or array-like object representing the data to be converted into a DataFrame
-        :param ds_type: a string representing the type of the data source (vendor or internal)
-        :param format_type: a string representing the desired format of the output
-        :param is_cpf: a boolean indicating whether to include the 'cpf' column in the DataFrame (default: False)
-        :return: a tuple containing the created DataFrame or Table and the data source type
+        Converts data into a DataFrame or Table based on the provided parameters.
 
-        This method takes in the specified parameters and creates a DataFrame using the provided data.
-        It then adds two additional columns: 'user_id' and 'dt_current_timestamp', which are generated
-        using the 'api.gen_user_id()' and 'api.gen_timestamp()' methods respectively.
+        Args:
+            df: An object representing the data to be converted into a DataFrame.
+            ds_type (str): A string representing the type of the data source ("vendor" or "internal").
+            format_type (str): A string representing the desired format of the output.
 
-        If the 'is_cpf' parameter is set to True, an additional column 'cpf' is added to the DataFrame.
-        The 'cpf' column is generated using the 'api.gen_cpf()' method.
+        Returns:
+            tuple: A tuple containing the created DataFrame or Table and the data source type.
 
-        If the 'format_type' parameter is set to "json" and the 'ds_type' parameter is not "redis", the DataFrame is
-        converted to JSON format using the 'to_json()' method and encoded as UTF*-8.
-        The encoded JSON data and the 'ds_type' are returned as a tuple.
-
-        If the 'format_type' parameter is not "json", the DataFrame is converted to a Parquet table
-        using the 'pa.Table.from_pandas()' method. The Parquet table and the 'ds_type' are returned * as a tuple.
+        Converts data into a DataFrame or Table based on the provided parameters.
         """
 
         if format_type == "json":
@@ -104,25 +89,33 @@ class MinioStorage(object):
 
     def create_object_name(self, file_prefix, object_name, format_type, timestamp):
         """
-        :param file_prefix: The prefix for the file or object name.
-        :param object_name: The name of the object.
-        :param format_type: The format type or extension of the object.
-        :param timestamp: The timestamp to be appended to the object name.
-        :return: The object name concatenating the input parameters using forward slashes.
-        """
+        Constructs the object name by concatenating input parameters using forward slashes.
 
+        Args:
+            file_prefix (str): The prefix for the file or object name.
+            object_name (str): The name of the object.
+            format_type (str): The format type or extension of the object.
+            timestamp (str): The timestamp to be appended to the object name.
+
+        Returns:
+            str: The constructed object name.
+
+        Constructs the object name by concatenating input parameters using forward slashes.
+        """
         return f"{file_prefix}/{object_name}/{format_type}/{timestamp}"
 
     def upload_data(self, data, object_name, ds_type, format_type):
         """
-        :param data: The data to be uploaded.
-        :param object_name: The name of the object in the S3 bucket.
-        :param ds_type: The type of the data source.
-        :param format_type: The format type of the data (json or parquet).
-        :return: The result of the data upload.
+        Uploads data to an S3 bucket based on the provided parameters.
 
-        Uploads data to an S3 bucket based on the provided parameters. If the format type is "json",
-        the data is uploaded as a json file. If the format type is "parquet", the data is uploaded * as a parquet file.
+        Args:
+            data: The data to be uploaded.
+            object_name (str): The name of the object in the S3 bucket.
+            ds_type (str): The type of the data source.
+            format_type (str): The format type of the data.
+
+        Returns:
+            str: The result of the data upload.
         """
 
         file_loc_root_folder: str = "strider"
@@ -132,18 +125,10 @@ class MinioStorage(object):
 
             file_uuid = str(uuid.uuid4())
             object_name = self.create_object_name(file_prefix, object_name, format_type, file_uuid)
-
-            print(f"file location: {object_name}")
-
             try:
                 with tempfile.NamedTemporaryFile(suffix=".parquet") as temp_file:
-
-                    print(f"data: {data}")
-                    print(f"datatype: {type(data)}")
-                    print(f"temp_file.name : {temp_file.name}")
                     pq.write_table(data, temp_file.name)
                     temp_file.seek(0)
-                    print("Inserindo o dado")
                     put_data = self.client.put_object(
                         bucket_name="landing",
                         object_name=f"{object_name}.parquet",
@@ -160,29 +145,23 @@ class MinioStorage(object):
         """
         Write data to a file based on the specified data source type and format type.
 
-        :param ds_type: The type of data source. Valid values are "mssql", "postgres", "mongodb", "redis".
-        :param format_type: The type of format to save the data.
-        :return: If the data source type is "mssql", returns a tuple containing the upload results for the "users" and "credit_card" objects.
-                 If the data source type is "postgres", returns a tuple containing the upload results for the "payments", "subscription", and "vehicle" objects.
-                 If the data source type is "mongodb", returns a tuple containing the upload results for the "rides", "users", and "stripe" objects.
-                 If the data source type is "redis", returns a tuple containing the upload results for the "google_auth", "linkedin_auth", and "apple_auth" objects.
+        Args:
+            ds_type (str): The type of data source. Valid values are "internal", or "vendor".
+            format_type (str): The type of format to save the data.
+
+        Returns:
+            tuple: If the data source type is "internal", returns a tuple containing the upload results for the "users", "streams and "movies" objects.
+                   If the data source type is "vendor", returns a tuple containing the upload results for the "authors", "books", and "reviews" objects.
         """
 
         if ds_type == "internal":
             movies_df = pd.read_csv("src/sources/internal/movies.csv")
-            print(movies_df.head())
             streams_df = pd.read_csv("src/sources/internal/streams.csv")
             users_df = pd.read_csv("src/sources/internal/users.csv")
-
-            print("Terminou de ler os dados internal")
 
             movies_data, ds_type = self.create_dataframe(df=movies_df, ds_type=ds_type, format_type=format_type)
             streams_data, ds_type = self.create_dataframe(df=streams_df, ds_type=ds_type, format_type=format_type)
             users_data, ds_type = self.create_dataframe(df=users_df, ds_type=ds_type, format_type=format_type)
-
-            print("dataframes criados internal")
-
-            print(movies_data)
 
             return_movies = self.upload_data(data=movies_data, object_name="movies", ds_type=ds_type, format_type=format_type)
             return_streams = self.upload_data(data=streams_data, object_name="streams", ds_type=ds_type, format_type=format_type)
@@ -192,18 +171,12 @@ class MinioStorage(object):
 
         elif ds_type == "vendor":
             authors_df = pd.read_json("src/sources/vendor/authors.json", orient='records')
-            print(authors_df.head())
             books_df = pd.read_json("src/sources/vendor/books.json", orient='records')
             reviews_df = pd.read_json("src/sources/vendor/reviews.json", orient='records')
-
-            print("Terminou de ler os dados vendor")
 
             authors_data, ds_type = self.create_dataframe(df=authors_df, ds_type=ds_type, format_type=format_type)
             books_data, ds_type = self.create_dataframe(df=books_df, ds_type=ds_type, format_type=format_type)
             reviews_data, ds_type = self.create_dataframe(df=reviews_df, ds_type=ds_type, format_type=format_type)
-            
-            print("dataframes criados vendor")
-
 
             return_authors = self.upload_data(data=authors_data, object_name="authors", ds_type=ds_type, format_type=format_type)
             return_books = self.upload_data(data=books_data, object_name="books", ds_type=ds_type, format_type=format_type)
