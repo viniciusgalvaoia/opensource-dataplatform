@@ -1,4 +1,4 @@
-# Strider Data Engineering Assessment - 3.0 - Vinicius Galvão
+# Open Source Data Platform
 
 ## **Overview**
 
