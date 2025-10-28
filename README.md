@@ -7,29 +7,29 @@ In order to answer some important questions about the product of small startup s
 ## Data Product
 In order to have a data product that is agnostic to any cloud provider, the following tools were chosen, all running on Kubernetes:
 
-![ETL Pipeline](imgs/dataplatform.PNG)
+![ETL Pipeline](https://raw.githubusercontent.com/viniciusgalvaoia/opensource-dataplatform/main/imgs/dataplatform.PNG)
 
 - **ArgoCD**
 
 A declarative, GitOps continuous delivery tool for Kubernetes, which we'll provision and manage all data applications through it.
 
-![ArgoCd](imgs/argocd.PNG)
+![ArgoCd](https://raw.githubusercontent.com/viniciusgalvaoia/opensource-dataplatform/main/imgs/argocd.PNG)
 
 - **MinIO**
 
  Offers cost-effective, scalable, high-performance, and secure object storage, compatible with S3, with easy deployment and strong community support.
 
- ![MinIO](imgs/minio.PNG)
+ ![MinIO](https://raw.githubusercontent.com/viniciusgalvaoia/opensource-dataplatform/main/imgs/minio.PNG)
 
 - **Trino**
 
 With Trino, we have a fast query performance, scalability, compatibility with various data sources, support for complex queries, and a vibrant open-source community. 
 
- ![Trino](imgs/trino.PNG)
+ ![Trino](https://raw.githubusercontent.com/viniciusgalvaoia/opensource-dataplatform/main/imgs/trino.PNG)
 
  - **Airflow** + **dbt**
 
- ![Airflow](imgs/airflow.PNG)
+ ![Airflow](https://raw.githubusercontent.com/viniciusgalvaoia/opensource-dataplatform/main/imgs/airflow.PNG)
 
  Using Airflow and dbt, enables version control and reproducibility of data transformations and orchestrations. 
 
