@@ -7,7 +7,7 @@ In order to answer some important questions about the product of small startup s
 ## Data Product
 In order to have a data product that is agnostic to any cloud provider, the following tools were chosen, all running on Kubernetes:
 
-![ETL Pipeline](imgs/data_platform.png)
+![ETL Pipeline](imgs/dataplatform.PNG)
 
 - **ArgoCD**
 
